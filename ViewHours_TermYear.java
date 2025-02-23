@@ -28,7 +28,7 @@ public class ViewHours_TermYear {
 		driver.manage().window().maximize();
 	}
 
-	@Test(priority = 0) //
+	@Test(priority = 0) //Xử lí bảo mật
 	public void Security() throws InterruptedException {
 		driver.findElement(By.xpath("/html/body/div/div[2]/button[3]")).click();
 		driver.findElement(By.xpath("/html/body/div/div[3]/p[2]/a")).click();
@@ -52,7 +52,7 @@ public class ViewHours_TermYear {
 		Thread.sleep(2000);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2) //Đến chức năng xem số giờ GV
 	public void Menubar() throws InterruptedException {
 		driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/ul/li[5]/a/span")).click();
 		Thread.sleep(2000);
