@@ -1,18 +1,11 @@
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.Duration;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
-// import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -58,9 +51,6 @@ public class ViewHours_Lesson_TeamYear {
 		Thread.sleep(2000);
 		driver.findElement(By.linkText("Số giờ cá nhân")).click();
 	}
-
-	// select2-unit-container
-	// select2-year-container
 
 	@Test(priority = 3)
 	public void testDropListHocky() throws InterruptedException {
@@ -143,8 +133,32 @@ public class ViewHours_Lesson_TeamYear {
 		Table.click();
 	}
 
-//	@AfterTest
-//	public void teardown() {
-//		driver.quit();
-//	}
+	@Test(priority = 4)
+	public void testExtractTableData() {
+		System.out.println("Hoc ky 666 - Nam hoc 2024 - 2025");
+		// Tìm tất cả các hàng trong tbody
+		List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
+
+		// Duyệt qua từng hàng để lấy dữ liệu
+		for (WebElement row : rows) {
+			List<WebElement> columns = row.findElements(By.tagName("td"));
+
+			String ma_hp = columns.get(1).getText();
+			String ten_hp = columns.get(2).getText();
+			String nganh = columns.get(3).getText();
+			String so_tc = columns.get(4).getText();
+			String so_lop = columns.get(5).getText();
+			String so_gio_giang = columns.get(6).getText();
+			String so_gio_quy_doi = columns.get(7).getText();
+
+			System.out.println("Mã HP: " + ma_hp + " - Tên HP: " + ten_hp + " - Ngành: " + nganh + " - Số TC: " + so_tc
+					+ " - Số lớp: " + so_lop + " - Số giờ giảng: " + so_gio_giang + " - Số giờ quy đổi: "
+					+ so_gio_quy_doi);
+		}
+	}
+
+	@AfterTest
+	public void close() {
+		driver.quit();
+	}
 }
