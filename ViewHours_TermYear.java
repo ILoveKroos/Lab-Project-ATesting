@@ -1,18 +1,11 @@
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.Duration;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
-// import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -27,8 +20,14 @@ public class ViewHours_TermYear {
 		driver.get(BaseURL);
 		driver.manage().window().maximize();
 	}
+	
+	String[][] expectedData = {
+	        {"2274802010221", "Trần Gia Hào", "Cơ hữu", "3", "4", "120"},
+	        {"2274802010002", "-", "Cơ hữu", "3", "4", "120"},
+	        {"3231332", "QuocTrieu", "Cơ hữu", "2", "3", "90"}
+	    };
 
-	@Test(priority = 0) //Xử lí bảo mật
+	@Test(priority = 0)
 	public void Security() throws InterruptedException {
 		driver.findElement(By.xpath("/html/body/div/div[2]/button[3]")).click();
 		driver.findElement(By.xpath("/html/body/div/div[3]/p[2]/a")).click();
@@ -36,7 +35,7 @@ public class ViewHours_TermYear {
 		Thread.sleep(3000);
 	}
 
-	@Test(priority = 1) //Login
+	@Test(priority = 1) // Login
 	public void Login() throws InterruptedException {
 		driver.findElement(By.id("i0116")).sendKeys("hao.2274802010221@vanlanguni.vn");
 		driver.findElement(By.xpath(
@@ -52,15 +51,12 @@ public class ViewHours_TermYear {
 		Thread.sleep(2000);
 	}
 
-	@Test(priority = 2) //Đến chức năng xem số giờ GV
+	@Test(priority = 2)
 	public void Menubar() throws InterruptedException {
 		driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/ul/li[5]/a/span")).click();
 		Thread.sleep(2000);
 		driver.findElement(By.linkText("Số giờ giảng viên")).click();
 	}
-
-	// select2-unit-container
-	// select2-year-container
 
 	@Test(priority = 3)
 	public void testDropListHocky() throws InterruptedException {
@@ -117,7 +113,7 @@ public class ViewHours_TermYear {
 		Tutor1_1.sendKeys("Tất cả" + Keys.RETURN);
 		Thread.sleep(5000);
 	}
-	
+
 	@Test(priority = 3)
 	public void testDropListNamhoc() throws InterruptedException {
 		// Tìm DropList Học kỳ (Gồm học kỳ và Năm học)
@@ -147,9 +143,48 @@ public class ViewHours_TermYear {
 		Year2_1.sendKeys("2024 - 2025" + Keys.RETURN);
 		Thread.sleep(5000);
 	}
-	
+
+	@Test(priority = 4)
+	public void selectBangBieu() throws InterruptedException {
+		WebElement bangBieuButton = driver.findElement(By.xpath("//*[@id=\"table-tab\"]"));
+		bangBieuButton.click();
+		Thread.sleep(2000);
+
+	}
+
+	@Test(priority = 5)
+	public void displayTable() {
+		// Tìm tất cả các hàng trong tbody
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='tblStatistics']/tbody/tr"));
+
+        // Duyệt từng hàng và kiểm tra
+        for (int i = 0; i < rows.size(); i++) {
+            List<WebElement> columns = rows.get(i).findElements(By.tagName("td"));
+
+            String ma_gv = columns.get(2).getText();
+            String ten_gv = columns.get(3).getText();
+            String loai_gv = columns.get(4).getText();
+            String so_hp = columns.get(5).getText();
+            String so_lop = columns.get(6).getText();
+            String so_gio_giang = columns.get(7).getText();
+
+            // In kết quả
+            System.out.println("Mã GV: " + ma_gv + " - Tên GV: " + ten_gv +
+                    " - Loại GV: " + loai_gv + " - Số HP: " + so_hp +
+                    " - Số lớp: " + so_lop + " - Số giờ giảng: " + so_gio_giang);
+
+            // So sánh giá trị
+            Assert.assertEquals(ma_gv, expectedData[i][0], "Mã GV không khớp");
+            Assert.assertEquals(ten_gv, expectedData[i][1], "Tên GV không khớp");
+            Assert.assertEquals(loai_gv, expectedData[i][2], "Loại GV không khớp");
+            Assert.assertEquals(so_hp, expectedData[i][3], "Số HP không khớp");
+            Assert.assertEquals(so_lop, expectedData[i][4], "Số lớp không khớp");
+            Assert.assertEquals(so_gio_giang, expectedData[i][5], "Số giờ giảng không khớp");
+        }
+    }
+
 	@AfterTest
-	public void teardown() {
+	public void close() {
 		driver.quit();
 	}
 }
