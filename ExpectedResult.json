@@ -1,0 +1,31 @@
+{
+    "expectedData": [
+        {
+            "ma_hp": "71ITIS30203",
+            "ten_hp": "Hệ Quản trị Cơ sở dữ liệu",
+            "nganh": "SWTech",
+            "so_tc": "3",
+            "so_lop": "1LT + 1TH",
+            "so_gio_giang": "60",
+            "so_gio_quy_doi": "348"
+        },
+        {
+            "ma_hp": "71ITSE30203",
+            "ten_hp": "Lập trình hướng đối tượng",
+            "nganh": "SWTech",
+            "so_tc": "3",
+            "so_lop": "1TH",
+            "so_gio_giang": "30",
+            "so_gio_quy_doi": "203"
+        },
+        {
+            "ma_hp": "71ITSE30303",
+            "ten_hp": "Cấu trúc dữ liệu và giải thuật",
+            "nganh": "SWTech",
+            "so_tc": "3",
+            "so_lop": "1LT",
+            "so_gio_giang": "30",
+            "so_gio_quy_doi": "186"
+        }
+    ]
+}
